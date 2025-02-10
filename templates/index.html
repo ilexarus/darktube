@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<h2 class="mb-4">Популярные видео</h2>
+<div class="row">
+  {% for video in videos %}
+  <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+    <div class="card h-100">
+      <a href="{{ url_for('video', video_id=video.id) }}">
+        <video class="card-img-top" style="height:150px; object-fit: cover;" muted>
+          <source src="{{ url_for('uploaded_file', filename=video.filename) }}" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+      </a>
+      <div class="card-body p-2">
+        <a href="{{ url_for('video', video_id=video.id) }}" class="text-white">
+          <h6 class="card-title">{{ video.title }}</h6>
+        </a>
+        <small class="text-muted">{{ video.upload_date.strftime('%Y-%m-%d') }}</small>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% if videos|length == 0 %}
+    <div class="col-12">
+      <p>Нет видео для отображения.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}{{ video.title }}{% endblock %}
+{% block content %}
+<div class="row">
+  <!-- Основной контент -->
+  <div class="col-md-8">
+    <div class="embed-responsive embed-responsive-16by9 mb-3">
+      <video controls class="embed-responsive-item">
+        <source src="{{ url_for('uploaded_file', filename=video.filename) }}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+      </video>
+    </div>
+    <h3>{{ video.title }}</h3>
+    <p>Загружено: {{ video.upload_date.strftime('%Y-%m-%d %H:%M') }}</p>
+    <p>{{ video.description }}</p>
+    <hr>
+    <h5>Комментарии</h5>
+    <p>Функция комментариев в разработке.</p>
+  </div>
+  
+  <!-- Боковая панель с рекомендованными видео -->
+  <div class="col-md-4">
+    <h5>Рекомендуемые видео</h5>
+    {% for rec in recommended_videos %}
+      <div class="card mb-3">
+        <a href="{{ url_for('video', video_id=rec.id) }}">
+          <video class="card-img-top" style="height:150px; object-fit: cover;" muted>
+            <source src="{{ url_for('uploaded_file', filename=rec.filename) }}" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </a>
+        <div class="card-body p-2">
+          <a href="{{ url_for('video', video_id=rec.id) }}" class="text-white">
+            <h6 class="card-title mb-1">{{ rec.title }}</h6>
+          </a>
+          <small class="text-muted">{{ rec.upload_date.strftime('%Y-%m-%d') }}</small>
+        </div>
+      </div>
+    {% else %}
+      <p>Нет рекомендованных видео.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
